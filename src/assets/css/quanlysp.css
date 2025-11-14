@@ -1,110 +1,171 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f2f4f7;
-  margin: 0;
-  padding: 0;
+:root {
+  /* Bảng màu Light Mode Sáng sủa */
+  --bg-light: #f9fafb;       /* Nền cực sáng */
+  --bg-card: #ffffff;        /* Nền thẻ/Container trắng tinh */
+  --text-dark: #2c3e50;      /* Màu chữ đậm */
+  --border-subtle: #e0e4eb;  /* Màu viền/phân cách nhẹ */
+  
+  /* Màu nhấn (Accent Colors) - Giữ lại màu tươi sáng */
+  --primary-accent: #00bcd4; /* Cyan/Lục bảo - Màu chính cho nút/hoạt động */
+  --success-color: #4caf50;  /* Xanh lá cho thành công */
+  --danger-color: #ef5350;   /* Đỏ cho nguy hiểm/xóa */
+  --warning-color: #ffb300;  /* Vàng cho cảnh báo */
+  --info-color: #42a5f5;     /* Xanh dương cho thông tin */
 }
 
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-light); /* Nền sáng */
+  margin: 0;
+  padding: 0;
+  color: var(--text-dark); /* Màu chữ tối */
+}
+
+/* --- Container (Thẻ chứa) --- */
 .container {
-  max-width: 900px;
-  margin: 40px auto;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 1100px;
+  margin: 50px auto;
+  background: var(--bg-card);
+  padding: 30px;
+  border-radius: 16px;
+  /* Hiệu ứng đổ bóng mềm mại (Soft UI Shadow) */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08), 0 2px 5px rgba(0, 0, 0, 0.05); 
+  border: 1px solid var(--border-subtle);
 }
 
 h2 {
   margin-top: 0;
-  color: #333;
+  color: var(--text-dark);
+  font-size: 28px;
+  border-bottom: 3px solid var(--border-subtle); /* Gạch chân nhẹ hơn */
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-/* Nút nằm trên đầu bảng */
+/* --- Nút hành động trên bảng --- */
 .table-actions {
   display: flex;
-  justify-content: flex-start; /* căn trái */
-  margin-bottom: 10px; /* khoảng cách với bảng */
+  justify-content: flex-start;
+  margin-bottom: 20px;
 }
 
+/* --- Bảng Sản phẩm --- */
 .product-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .product-table th,
 .product-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border: 1px solid var(--border-subtle);
+  padding: 15px;
   text-align: left;
 }
 
 .product-table th {
-  background: #f0f0f0;
+  background: var(--primary-accent); /* Header bảng màu nhấn */
+  color: #fff; /* Chữ trắng trên nền nhấn */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.product-table tr:hover {
-  background-color: #fafafa;
+.product-table td {
+    background-color: var(--bg-card); 
+}
+
+.product-table tr:hover td {
+  background-color: #f0f3f6; /* Màu nền hover rất nhẹ */
 }
 
 .thumb {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 8px;
+  border: 2px solid var(--border-subtle); /* Viền nhẹ nhàng */
 }
 
+/* --- Nút Chung --- */
 .btn {
   border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
+  padding: 10px 18px;
+  border-radius: 6px;
   cursor: pointer;
   color: white;
-  margin-right: 4px;
+  margin-right: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .btn.green {
-  background-color: #28a745;
+  background-color: var(--success-color);
 }
 .btn.red {
-  background-color: #dc3545;
+  background-color: var(--danger-color);
 }
 .btn.yellow {
-  background-color: #ffc107;
-  color: black;
+  background-color: var(--warning-color);
+  color: var(--text-dark);
 }
 .btn.blue {
-  background-color: #007bff;
+  background-color: var(--info-color);
 }
 .btn.gray {
-  background-color: #6c757d;
+  background-color: #95a5a6; /* Màu xám trung tính */
+}
+
+.btn.primary {
+    background-color: var(--primary-accent);
+    color: #fff;
 }
 
 .btn:hover {
-  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
+/* --- Form (Sử dụng cho Thêm/Sửa) --- */
 .form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px;
+  padding: 10px 0;
 }
 
 label {
   display: flex;
   flex-direction: column;
-  font-weight: bold;
-  color: #444;
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 14px;
 }
 
 input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 10px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  background-color: var(--bg-card); /* Nền input trắng */
+  color: var(--text-dark);
+  margin-top: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+    border-color: var(--primary-accent);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2); /* Shadow nhẹ nhàng khi focus */
 }
 
 .actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 12px;
+  margin-top: 20px;
 }
