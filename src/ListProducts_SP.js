@@ -1,101 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "./supbaseClient";
-
-// Định nghĩa các đối tượng style Trắng - Đen
-const styles = {
-  // Nền tổng thể: Trắng Sáng
-  container: {
-    padding: "40px",
-    maxWidth: "1400px",
-    margin: "0 auto",
-    backgroundColor: "#ffffff", // Nền trang màu Trắng tinh
-    minHeight: "100vh",
-    color: "#2c3e50", // Màu chữ mặc định tối
-  },
-  // Màu nhấn Gold
-  accentColor: "#ffc107", // Vàng Kim
-  // Màu giá
-  priceColor: "#e53935", // Màu đỏ nổi bật cho giá
-
-  heading: {
-    fontSize: "2rem",
-    color: "#1a237e", // Xanh Navy đậm cho tiêu đề
-    marginBottom: "30px",
-    borderBottom: "3px solid #eeeeee", // Gạch chân xám rất nhạt
-    paddingBottom: "10px",
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-    gap: "25px",
-  },
-  // Card Sản phẩm: Màu Đen/Tối
-  cardBase: {
-    border: "1px solid #333333", // Viền tối
-    borderRadius: "15px",
-    padding: "15px",
-    textAlign: "left",
-    cursor: "pointer",
-    background: "#1e1e1e", // Nền Card Đen/Xám rất đậm
-    boxShadow: "0 6px 15px rgba(0,0,0,0.5)", // Đổ bóng mạnh trên nền trắng
-    transition: "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
-    display: "flex",
-    flexDirection: "column",
-  },
-  cardHover: {
-    transform: "translateY(-8px)",
-    boxShadow: "0 15px 30px rgba(0,0,0,0.7)",
-    border: "1px solid #ffc107", // Viền Vàng Kim khi hover
-  },
-  imageWrapper: {
-    width: "100%",
-    height: "220px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
-    borderRadius: "10px",
-    backgroundColor: "#333333", // Nền ảnh xám đậm
-    marginBottom: "10px",
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-  },
-  title: {
-    margin: "10px 0 5px",
-    fontSize: "1.1rem",
-    color: "#ffffff", // Chữ trắng sáng trên nền tối
-    fontWeight: "600",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-  price: {
-    color: "#e53935", // Màu giá vẫn nổi bật
-    fontWeight: "800",
-    fontSize: "1.3rem",
-    margin: "5px 0",
-  },
-  rating: {
-    color: "#cccccc", // Màu xám nhạt cho rating
-    fontSize: "0.85rem",
-    marginTop: "5px",
-  }
-};
+import { useCart } from "./CartContext"; // ✅ 1. Import Context
 
 const ListProducts_SP = () => {
   const [listProduct, setListProduct] = useState([]);
   const navigate = useNavigate();
+
+  // ✅ 2. Lấy hàm addToCart từ Context
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const { data, error } = await supabase
           .from("product1")
-          .select("id, title, price, image, rating_rate, rating_count")
+          .select("*")
           .order("id", { ascending: true });
         if (error) throw error;
         setListProduct(data);
@@ -106,43 +26,126 @@ const ListProducts_SP = () => {
     fetchProducts();
   }, []);
 
-  return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>SẢN PHẨM NỔI BẬT</h2>
+  // Hàm xử lý khi bấm "Thêm vào giỏ"
+  const handleAddToCart = (e, product) => {
+    // 🛑 QUAN TRỌNG: Ngăn sự kiện click lan ra thẻ cha (tránh chuyển trang)
+    e.stopPropagation();
 
-      <div style={styles.grid}>
+    addToCart(product);
+    alert(`Đã thêm "${product.title}" vào giỏ hàng!`);
+  };
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <h2>Danh sách sản phẩm</h2>
+
+      <div
+        style={{
+          display: "grid",
+          width: "1000px",
+          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+          gap: "20px",
+        }}
+      >
         {listProduct.map((p) => (
           <div
             key={p.id}
+            // Sự kiện click vào thẻ -> Chuyển sang trang chi tiết
             onClick={() => navigate(`/detail/${p.id}`)}
-            style={styles.cardBase}
+            style={{
+              border: "1px solid #ddd",
+              borderRadius: "10px",
+              padding: "12px",
+              textAlign: "center",
+              cursor: "pointer",
+              background: "#fff",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+              transition: "transform 0.2s ease, box-shadow 0.2s ease",
+              display: "flex", // Flex để căn chỉnh chiều cao
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
             onMouseEnter={(e) => {
-              Object.assign(e.currentTarget.style, styles.cardHover);
+              e.currentTarget.style.transform = "translateY(-4px)";
+              e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
             }}
             onMouseLeave={(e) => {
-              Object.assign(e.currentTarget.style, styles.cardBase);
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
             }}
           >
-            <div style={styles.imageWrapper}>
-              <img
-                src={p.image}
-                alt={p.title}
-                style={styles.image}
-              />
+            {/* Phần nội dung sản phẩm */}
+            <div>
+              <div
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  overflow: "hidden",
+                  borderRadius: "8px",
+                  backgroundColor: "#f9f9f9",
+                }}
+              >
+                <img
+                  src={p.image}
+                  alt={p.title}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
+
+              <h4
+                style={{
+                  margin: "10px 0 5px",
+                  fontSize: "1rem",
+                  minHeight: "40px",
+                }}
+              >
+                {p.title}
+              </h4>
+              <p style={{ color: "#e63946", fontWeight: "bold", margin: "0" }}>
+                ${p.price}
+              </p>
+              <small
+                style={{
+                  color: "#555",
+                  display: "block",
+                  marginBottom: "10px",
+                }}
+              >
+                ⭐ {p.rating_rate} | ({p.rating_count} đánh giá)
+              </small>
             </div>
 
-            <div style={{ flexGrow: 1 }}>
-                <h4 style={styles.title}>
-                  {p.title}
-                </h4>
-                <p style={styles.price}>
-                  ${p.price}
-                </p>
-            </div>
-            
-            <small style={styles.rating}>
-              <span style={{color: styles.accentColor, fontWeight: 'bold'}}>★</span> {p.rating_rate} | ({p.rating_count} đánh giá)
-            </small>
+            {/* ✅ 3. Nút Thêm vào giỏ */}
+            <button
+              onClick={(e) => handleAddToCart(e, p)} // Truyền event 'e' vào
+              style={{
+                width: "100%",
+                padding: "10px",
+                backgroundColor: "#007bff",
+                color: "white",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                fontWeight: "600",
+                marginTop: "10px",
+                transition: "background 0.2s",
+              }}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.backgroundColor = "#0056b3")
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.style.backgroundColor = "#007bff")
+              }
+            >
+              🛒 Thêm vào giỏ
+            </button>
           </div>
         ))}
       </div>

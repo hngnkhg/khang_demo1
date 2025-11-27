@@ -1,246 +1,122 @@
-:root {
-  /* Bảng màu mới */
-  --primary-color: #3f51b5; /* Xanh Navy đậm - Màu chủ đạo */
-  --secondary-color: #e91e63; /* Đỏ rượu vang/Magenta - Màu nhấn */
-  --text-dark: #2c3e50;
-  --text-light: #ecf0f1;
-  --bg-color-main: #f5f7fa; /* Nền sáng, nhẹ nhàng */
-
-  /* Kích thước & Border */
-  --header-height-top: 130px;
-  --menu-height: 60px;
-  --border-radius: 12px;
-}
-
 body {
   margin: 0;
-  font-family: 'Poppins', 'Segoe UI', sans-serif; /* Font hiện đại hơn */
-  background-color: var(--bg-color-main);
-  color: var(--text-dark);
+}
+#topleft ul {
+  text-decoration: none;
+  list-style: none;
+  width: 350px;
+  padding-top: 20px;
+}
+#topleft ul li {
+  text-decoration: none;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+#topleft ul li a {
+  text-decoration: none;
+  font-family: "Times New Roman", Times, serif;
+  color: blueviolet;
 }
 
-/* --- Layout Chung --- */
-.app-layout {
-  min-height: 100vh;
+.header1 {
+  height: 160px;
   display: flex;
   flex-direction: column;
 }
 
-/* --- Header & Navigation --- */
-.main-header {
-  background-color: transparent; /* Header không có màu nền mặc định */
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-/* Header Top - Tăng kích thước khu vực */
-.header-top {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr 1fr;
-  align-items: center;
-  height: var(--header-height-top);
-  padding: 10px 40px; /* Tăng padding */
-  max-width: 1500px;
-  margin: 0 auto;
-}
-
-/* Top Navigation Link */
-.top-nav {
+.banner1 {
+  height: 104px;
   display: flex;
-  gap: 25px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  flex-direction: row;
+  justify-content: center;
 }
 
-.top-link {
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-dark);
-  padding: 8px 0;
-  transition: all 0.3s;
-  border-bottom: 2px solid transparent;
-}
-
-.top-link:hover {
-  color: var(--secondary-color); /* Hover màu nhấn */
-  border-bottom-color: var(--secondary-color);
-}
-
-/* Logo */
-.logo-container {
-  text-align: center;
-}
-
-.main-logo {
-  max-width: 90%;
-  height: auto;
-  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1)); /* Thêm shadow cho logo */
-}
-
-/* Search và User Area */
-.search-user-area {
+.ul1 {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: row;
 }
 
-.search-box {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 50px; /* Bo góc tròn hẳn */
-  overflow: hidden;
-  background-color: #fff;
-  max-width: 280px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.search-input {
-  border: none;
-  padding: 10px 20px;
-  font-size: 14px;
-  outline: none;
+.container {
+  min-height: 500px;
   width: 100%;
-}
-
-.search-button {
-  background-color: var(--primary-color);
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  color: #fff;
-  font-size: 16px;
-  transition: background-color 0.2s;
-}
-
-.search-button:hover {
-  background-color: var(--secondary-color);
-}
-
-/* --- Main Menu Bar (GLASSMORHISM EFFECT) --- */
-.main-menubar {
-  /* Hiệu ứng Glassmorphism */
-  background: rgba(255, 255, 255, 0.15); /* Nền bán trong suốt */
-  backdrop-filter: blur(10px); /* Hiệu ứng làm mờ */
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Viền mờ */
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Đổ bóng mạnh */
-  
-  height: var(--menu-height);
+  min-width: 1100px;
+  justify-content: center;
   display: flex;
-  align-items: stretch;
-  justify-content: space-between;
-  max-width: 90%; /* Chiều rộng hẹp hơn so với header */
-  margin: -30px auto 10px auto; /* Đưa menu nổi lên trên header */
-  border-radius: var(--border-radius); /* Bo góc toàn bộ thanh menu */
-  overflow: hidden;
+}
+.menu {
+  height: 56px;
+  background-color: #b22d30;
+}
+.logo1 {
+  width: 560px;
 }
 
+/**********************/
+.menubar {
+  background-color: #b22d30;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-sizing: border-box;
+}
+
+/* --- Menu bên trái --- */
 .menubar-left {
   display: flex;
-  align-items: center;
+  gap: 20px;
 }
 
 .menu-item {
-  color: var(--text-dark); /* Màu chữ tối để dễ đọc trên nền sáng */
+  color: #fff;
   text-decoration: none;
-  font-size: 17px; /* Tăng cỡ chữ */
-  font-weight: 600;
-  padding: 0 35px; /* Tăng padding ngang */
-  height: 100%;
-  display: flex;
-  align-items: center;
-  transition: all 0.3s;
-  position: relative;
-}
-
-.menu-item::after { /* Hiệu ứng gạch chân hiện đại */
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 3px;
-    background-color: var(--secondary-color);
-    transition: width 0.3s ease-out;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  transition: 0.2s;
 }
 
 .menu-item:hover {
-  color: var(--secondary-color);
+  text-decoration: underline;
+  opacity: 0.9;
 }
 
-.menu-item:hover::after {
-    width: 80%;
-}
-
-/* --- User Section in Menubar --- */
+/* --- Phần bên phải (tên người dùng + đăng xuất) --- */
 .menubar-right {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding-right: 20px;
+  gap: 12px;
 }
 
 .username {
-  color: var(--primary-color);
-  font-size: 15px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.user-icon {
-    font-size: 18px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .logout-btn {
-  background-color: var(--secondary-color);
-  color: #fff;
+  background-color: #fff;
+  color: #b22d30;
   border: none;
-  border-radius: 25px; /* Nút bo tròn */
-  padding: 10px 20px;
+  border-radius: 6px;
+  padding: 5px 12px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 700;
-  box-shadow: 0 4px 6px rgba(233, 30, 99, 0.4);
-  transition: all 0.3s;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.25s;
 }
 
 .logout-btn:hover {
-  background-color: #d81b60; /* Màu đậm hơn khi hover */
-  transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(233, 30, 99, 0.5);
+  background-color: #f5f5f5;
 }
 
 .login-link {
-  color: var(--secondary-color);
+  color: #fff;
   text-decoration: none;
-  font-weight: 700;
-  transition: color 0.2s;
+  font-weight: 500;
 }
 
 .login-link:hover {
   text-decoration: underline;
-  color: var(--primary-color);
-}
-
-/* --- Main Content --- */
-.main-content-container {
-  flex-grow: 1;
-  padding: 40px; /* Tăng padding */
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-/* --- Footer --- */
-.main-footer {
-  background-color: var(--text-dark);
-  color: var(--text-light);
-  padding: 25px;
-  text-align: center;
-  font-size: 14px;
 }

@@ -29,7 +29,7 @@ const styles = {
   // Card Sản phẩm (Base Style)
   cardBase: {
     // Loại bỏ border, thay bằng đổ bóng nhẹ
-    border: "none", 
+    border: "none",
     borderRadius: "12px", // Bo góc mềm mại
     padding: "20px",
     textAlign: "center",
@@ -88,7 +88,7 @@ const styles = {
     color: "#FF9800", // Màu cam cho ngôi sao
     marginTop: "5px",
     fontWeight: "bold",
-  }
+  },
 };
 
 const Listsanpham = () => {
@@ -118,18 +118,18 @@ const Listsanpham = () => {
               alt={product.title}
               style={styles.imageStyle}
             />
-            
-            <div style={{ flexGrow: 1 }}> {/* Dùng div bao bọc để căn chỉnh */}
-              <h3 style={styles.titleStyle}>
-                {product.title}
-              </h3>
+
+            <div style={{ flexGrow: 1 }}>
+              {" "}
+              {/* Dùng div bao bọc để căn chỉnh */}
+              <h3 style={styles.titleStyle}>{product.title}</h3>
             </div>
-            
-            <div> {/* Footer card */}
+
+            <div>
+              {" "}
+              {/* Footer card */}
               <p style={styles.priceStyle}>${product.price}</p>
-              <p style={styles.categoryStyle}>
-                {product.category}
-              </p>
+              <p style={styles.categoryStyle}>{product.category}</p>
               <p style={styles.ratingStyle}>
                 ⭐ {product.rating.rate} ({product.rating.count} đánh giá)
               </p>

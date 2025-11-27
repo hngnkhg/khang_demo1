@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const Home = () => {
-  const str = "THỨ NĂM NGÀY 16/10/2025";
+  const str = "THỨ BẢY NGÀY 11/10/2025";
 
   // Biến thường
   const dssv = ["Nguyễn Văn An111", "Trần Văn Ba", "Nguyễn Văn Cường"];
@@ -61,6 +61,8 @@ const Home = () => {
 
       return phantu;
     });
+
+    setTenMoi("");
     setDs3(newds3);
   };
 

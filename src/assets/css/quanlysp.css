@@ -1,171 +1,110 @@
-:root {
-  /* Bảng màu Light Mode Sáng sủa */
-  --bg-light: #f9fafb;       /* Nền cực sáng */
-  --bg-card: #ffffff;        /* Nền thẻ/Container trắng tinh */
-  --text-dark: #2c3e50;      /* Màu chữ đậm */
-  --border-subtle: #e0e4eb;  /* Màu viền/phân cách nhẹ */
-  
-  /* Màu nhấn (Accent Colors) - Giữ lại màu tươi sáng */
-  --primary-accent: #00bcd4; /* Cyan/Lục bảo - Màu chính cho nút/hoạt động */
-  --success-color: #4caf50;  /* Xanh lá cho thành công */
-  --danger-color: #ef5350;   /* Đỏ cho nguy hiểm/xóa */
-  --warning-color: #ffb300;  /* Vàng cho cảnh báo */
-  --info-color: #42a5f5;     /* Xanh dương cho thông tin */
-}
-
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: var(--bg-light); /* Nền sáng */
+  font-family: Arial, sans-serif;
+  background: #f2f4f7;
   margin: 0;
   padding: 0;
-  color: var(--text-dark); /* Màu chữ tối */
 }
 
-/* --- Container (Thẻ chứa) --- */
 .container {
-  max-width: 1100px;
-  margin: 50px auto;
-  background: var(--bg-card);
-  padding: 30px;
-  border-radius: 16px;
-  /* Hiệu ứng đổ bóng mềm mại (Soft UI Shadow) */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08), 0 2px 5px rgba(0, 0, 0, 0.05); 
-  border: 1px solid var(--border-subtle);
+  max-width: 900px;
+  margin: 40px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
   margin-top: 0;
-  color: var(--text-dark);
-  font-size: 28px;
-  border-bottom: 3px solid var(--border-subtle); /* Gạch chân nhẹ hơn */
-  padding-bottom: 10px;
-  margin-bottom: 20px;
+  color: #333;
 }
 
-/* --- Nút hành động trên bảng --- */
+/* Nút nằm trên đầu bảng */
 .table-actions {
   display: flex;
-  justify-content: flex-start;
-  margin-bottom: 20px;
+  justify-content: flex-start; /* căn trái */
+  margin-bottom: 10px; /* khoảng cách với bảng */
 }
 
-/* --- Bảng Sản phẩm --- */
 .product-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-collapse: collapse;
 }
 
 .product-table th,
 .product-table td {
-  border: 1px solid var(--border-subtle);
-  padding: 15px;
+  border: 1px solid #ddd;
+  padding: 8px;
   text-align: left;
 }
 
 .product-table th {
-  background: var(--primary-accent); /* Header bảng màu nhấn */
-  color: #fff; /* Chữ trắng trên nền nhấn */
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  background: #f0f0f0;
 }
 
-.product-table td {
-    background-color: var(--bg-card); 
-}
-
-.product-table tr:hover td {
-  background-color: #f0f3f6; /* Màu nền hover rất nhẹ */
+.product-table tr:hover {
+  background-color: #fafafa;
 }
 
 .thumb {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   object-fit: cover;
-  border-radius: 8px;
-  border: 2px solid var(--border-subtle); /* Viền nhẹ nhàng */
+  border-radius: 6px;
 }
 
-/* --- Nút Chung --- */
 .btn {
   border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
+  padding: 6px 12px;
+  border-radius: 4px;
   cursor: pointer;
   color: white;
-  margin-right: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-right: 4px;
 }
 
 .btn.green {
-  background-color: var(--success-color);
+  background-color: #28a745;
 }
 .btn.red {
-  background-color: var(--danger-color);
+  background-color: #dc3545;
 }
 .btn.yellow {
-  background-color: var(--warning-color);
-  color: var(--text-dark);
+  background-color: #ffc107;
+  color: black;
 }
 .btn.blue {
-  background-color: var(--info-color);
+  background-color: #007bff;
 }
 .btn.gray {
-  background-color: #95a5a6; /* Màu xám trung tính */
-}
-
-.btn.primary {
-    background-color: var(--primary-accent);
-    color: #fff;
+  background-color: #6c757d;
 }
 
 .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  opacity: 0.9;
 }
 
-/* --- Form (Sử dụng cho Thêm/Sửa) --- */
 .form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  padding: 10px 0;
+  gap: 12px;
 }
 
 label {
   display: flex;
   flex-direction: column;
-  font-weight: 600;
-  color: var(--text-dark);
-  font-size: 14px;
+  font-weight: bold;
+  color: #444;
 }
 
 input {
-  padding: 10px;
-  border: 1px solid var(--border-subtle);
-  border-radius: 6px;
-  background-color: var(--bg-card); /* Nền input trắng */
-  color: var(--text-dark);
-  margin-top: 5px;
-  font-size: 16px;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-input:focus {
-    border-color: var(--primary-accent);
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2); /* Shadow nhẹ nhàng khi focus */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 8px;
+  margin-top: 10px;
 }

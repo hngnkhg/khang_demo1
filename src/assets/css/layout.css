@@ -8,7 +8,7 @@ body {
   display: flex;
   flex-direction: row;
   text-align: center;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 
@@ -19,14 +19,23 @@ body {
   background-color: #fff;
 }
 .menutrai {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
+  /* FIX: Thêm display: flex để các mục này nằm ngang */
   display: flex;
-  flex-direction: row;
-  width: 270px;
+  justify-content: flex-start;
+  padding-left: 0; /* Bỏ padding mặc định của ul/ol nếu cần */
 }
 
 .menubar {
-  background-color: #b22d30;
+  background-color: #b22d30; /* Màu đỏ đậm */
   height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-sizing: border-box;
+  /* Có thể thêm width: 100%; nếu nó bị giới hạn bởi phần tử cha */
 }
 
 #menutrai {
@@ -41,7 +50,9 @@ body {
 #menutrai ul li {
   list-style-type: none;
   margin-left: 10px;
-  max-width: 100px;
+  max-width: 80px;
+  /* FIX: Hiển thị các mục menu nhỏ theo hàng ngang */
+  display: inline-block;
 }
 
 a.menutrai:link,
@@ -63,4 +74,65 @@ a.menutrai:hover {
 a.menutrai:active {
   color: #190c3f;
   font-family: "Times New Roman", Times, serif;
+}
+
+/***********************Phần Thông tin Login trên công cụ*************/
+
+/* --- Menu bên trái --- */
+.menubar-left {
+  display: flex;
+  gap: 20px;
+}
+
+.menu-item {
+  color: #fff;
+  text-decoration: none;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.menu-item:hover {
+  text-decoration: underline;
+  opacity: 0.9;
+}
+
+/* --- Phần bên phải (tên người dùng + đăng xuất) --- */
+.menubar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.username {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.logout-btn {
+  background-color: #fff;
+  color: #b22d30;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.logout-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.login-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-link:hover {
+  text-decoration: underline;
 }

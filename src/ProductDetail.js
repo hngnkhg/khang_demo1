@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { supabase } from "./supbaseClient";
+import { supabase } from "./supabaseClient";
 
 const ProductDetail = () => {
   const { id } = useParams();

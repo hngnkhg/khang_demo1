@@ -1,11 +1,23 @@
 import "./assets/css/main.css";
 import anhlogo from "./assets/images//Ten-truong-do-1000x159.png";
-import { Outlet, useNavigate } from "react-router-dom";
+// 1. Thêm Link để chuyển trang mượt mà không load lại
+import { Outlet, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+// 2. Import hook giỏ hàng để lấy số lượng
+import { useCart } from "./CartContext";
 
 const Layout = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+
+  // 3. Lấy cartItems từ Context
+  const { cartItems } = useCart();
+
+  // 4. Tính tổng số lượng sản phẩm (để hiển thị badge số nhỏ)
+  const totalQuantity = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -21,80 +33,109 @@ const Layout = () => {
   };
 
   return (
-    <div className="app-layout"> {/* Thẻ bao ngoài chính */}
-      <header className="main-header">
-        {/* Phần Header Top - Đặt logo, navigation, và tìm kiếm/user ở 3 cột */}
-        <div className="header-top">
-          {/* 1. Top Navigation/Link ngoài */}
-          <div className="top-nav">
-            <a href="/#" className="top-link">
-              TRANG CHỦ
-            </a>
-            <a href="/trang1" className="top-link">
-              EGOV
-            </a>
-            <a href="/admin/products" className="top-link">
-              QUẢN TRỊ
-            </a>
+    // Lưu ý: Trong React thực tế không nên dùng thẻ <html>, <body> ở đây
+    // vì nó đã có sẵn trong index.html, nhưng tôi giữ nguyên theo code của bạn.
+    <html>
+      <header>
+        <div id="divheader" className="header1">
+          <div id="banner" className="banner1">
+            <div id="topleft">
+              <ul className="ul1">
+                <li>
+                  <a href="/#">TRANG CHỦ</a>
+                </li>
+                <li>
+                  <a href="/trang1">EGOV</a>
+                </li>
+                <li>
+                  <a href="/admin/products">QUẢN TRỊ</a>
+                </li>
+              </ul>
+            </div>
+            <div id="logo" className="logo1">
+              <img src={anhlogo} width="548" alt="logo" />
+            </div>
+            <div id="divtimkiem" style={{ width: "300px" }}>
+              Phần tìm kiếm
+            </div>
           </div>
 
-          {/* 2. Logo Chính giữa */}
-          <div className="logo-container">
-            <img src={anhlogo} alt="Logo Trường" className="main-logo" />
-          </div>
+          <div id="menubar" className="menubar">
+            <div className="menubar-left">
+              <a href="/chat" className="menu-item">
+                Chat với AI
+              </a>
+              <a href="/menu2" className="menu-item">
+                Menu 2
+              </a>
+              <a href="/menu3" className="menu-item">
+                Menu 3
+              </a>
+            </div>
 
-          {/* 3. Tìm kiếm & User */}
-          <div className="search-user-area">
-            <div className="search-box">
-              <input type="text" placeholder="Tìm kiếm..." className="search-input" />
-              <button className="search-button">🔍</button>
+            <div
+              className="menubar-right"
+              style={{ display: "flex", alignItems: "center", gap: "15px" }}
+            >
+              {/* ✅ PHẦN THÊM MỚI: GIỎ HÀNG */}
+              <Link
+                to="/cart"
+                className="menu-item"
+                style={{
+                  fontWeight: "bold",
+                  color: "#fff",
+                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                🛒 Giỏ hàng
+                {totalQuantity > 0 && (
+                  <span
+                    style={{
+                      backgroundColor: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      padding: "2px 6px",
+                      fontSize: "12px",
+                      marginLeft: "5px",
+                    }}
+                  >
+                    {totalQuantity}
+                  </span>
+                )}
+              </Link>
+              {/* ✅ KẾT THÚC PHẦN GIỎ HÀNG */}
+
+              {user ? (
+                <>
+                  <span className="username" style={{ color: "yellow" }}>
+                    👤 {user.username}
+                  </span>
+                  <button
+                    className="logout-btn"
+                    onClick={handleLogout}
+                    style={{ cursor: "pointer", marginLeft: "10px" }}
+                  >
+                    Đăng xuất
+                  </button>
+                </>
+              ) : (
+                <a href="/login" className="login-link">
+                  Đăng nhập
+                </a>
+              )}
             </div>
           </div>
         </div>
-
-        {/* Phần Main Menu Bar - Thanh Menu Chính dưới header */}
-        <nav className="main-menubar">
-          <div className="menubar-left">
-            <a href="/menu1" className="menu-item primary">
-              Menu 1
-            </a>
-            <a href="/menu2" className="menu-item primary">
-              Menu 2
-            </a>
-            <a href="/menu3" className="menu-item primary">
-              Menu 3
-            </a>
-          </div>
-
-          {/* User/Login ở góc phải menubar */}
-          <div className="menubar-right">
-            {user ? (
-              <>
-                <span className="username">
-                  <span className="user-icon">👤</span> **{user.username}**
-                </span>
-                <button className="logout-btn" onClick={handleLogout}>
-                  Đăng xuất
-                </button>
-              </>
-            ) : (
-              <a href="/login" className="login-link">
-                Đăng nhập
-              </a>
-            )}
-          </div>
-        </nav>
       </header>
-
-      {/* Nội dung chính của trang */}
-      <main className="main-content-container">
-        <Outlet />
-      </main>
-
-      <footer className="main-footer">
-        <p>© 2025 Bản quyền thuộc về [Tên Cơ quan/Trường]</p>
-      </footer>
-    </div>
+      <body>
+        <div id="container" className="container">
+          <Outlet />
+        </div>
+      </body>
+      <footer></footer>
+    </html>
   );
 };
 
