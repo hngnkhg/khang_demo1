@@ -9,9 +9,9 @@ import Layout from "./Layout";
 // @ts-ignore
 import ListProducts_SP from "./ListProducts_SP";
 // @ts-ignore
-import Trang1 from "./Trang1";
+import Trang1 from "./Trang1"; // Trang EGOV
 // @ts-ignore
-import Trang2 from "./Trang2";
+import Trang2 from "./Trang2"; // Trang Menu 2/Menu 3
 // @ts-ignore
 import Chitietsanpham from "./Chitietsanpham";
 // @ts-ignore
@@ -25,34 +25,43 @@ import ListProducts_SP_Admin from "./ListProducts_SP_Admin";
 // @ts-ignore
 import EditProduct from "./EditProduct";
 
-import ChatPage from "./ChatPage"; // ✅ Import trang Chat
+import ChatPage from "./ChatPage";
 
 // --- IMPORT MỚI CHO GIỎ HÀNG ---
-import { CartProvider } from "./CartContext"; // Context vừa sửa ở Bước 1
-import CartPage from "./CartPage"; // Trang hiển thị giỏ hàng (Xem bước 3)
+import { CartProvider } from "./CartContext";
+import CartPage from "./CartPage";
 
 export default function App() {
   return (
-    // ✅ 1. Bọc Provider ở ngoài cùng để state giỏ hàng sống toàn app
     <CartProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
-            {/* Trang chủ hiển thị danh sách sản phẩm */}
+            {/* 1. TRANG CHỦ (Home Page) */}
             <Route index element={<ListProducts_SP />} />
 
-            {/* ✅ 2. Thêm Route cho Giỏ Hàng */}
+            {/* 2. CHỨC NĂNG CƠ BẢN */}
             <Route path="cart" element={<CartPage />} />
-
             <Route path="chat" element={<ChatPage />} />
-
-            <Route path="trang1" element={<Trang1 />} />
-            <Route path="trang2" element={<Trang2 />} />
-            <Route path="sanpham/:id" element={<Chitietsanpham />} />
-            <Route path="/admin/edit/:id" element={<EditProduct />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="logout" element={<LogoutPage />} />
 
+            {/* 3. TRANG NỘI DUNG (Từ Header) */}
+
+            {/* ✅ ĐÃ THÊM: Route cho EGOV (Giả sử Trang1 là trang EGOV) */}
+            <Route path="egov" element={<Trang1 />} />
+
+            {/* Route cũ (nếu link TRANG CHỦ->EGOV là /trang1) - Nên dùng EGOV ở trên */}
+            {/* <Route path="trang1" element={<Trang1 />} /> */}
+
+            {/* ✅ ĐÃ THÊM: Route cho Menu 2 và Menu 3 (Giả sử Trang2 dùng cho cả hai) */}
+            <Route path="menu2" element={<Trang2 />} />
+            <Route path="menu3" element={<Trang2 />} />
+
+            {/* 4. SẢN PHẨM & CHI TIẾT */}
+            <Route path="sanpham/:id" element={<Chitietsanpham />} />
+
+            {/* 5. ADMIN (Protected Routes) */}
             <Route
               path="admin/products"
               element={
@@ -61,6 +70,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/admin/edit/:id" element={<EditProduct />} />
           </Route>
         </Routes>
       </BrowserRouter>
