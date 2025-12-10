@@ -1,92 +1,165 @@
+/* --- 1. THIẾT LẬP CHUNG VÀ FONT CHỮ --- */
 body {
   margin: 0;
-}
-#topleft ul {
-  text-decoration: none;
-  list-style: none;
-  width: 350px;
-  padding-top: 20px;
-}
-#topleft ul li {
-  text-decoration: none;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-#topleft ul li a {
-  text-decoration: none;
-  font-family: "Times New Roman", Times, serif;
-  color: blueviolet;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Font hiện đại hơn */
+  background-color: #f5f5f5; /* Nền xám nhạt */
+  color: #333;
+  min-width: 1100px; /* Đảm bảo chiều rộng tối thiểu */
 }
 
+/* --- 2. HEADER TOP & MENU PHỤ (#topleft) --- */
 .header1 {
-  height: 160px;
+  height: 150px; /* Tăng nhẹ chiều cao để thoáng hơn */
   display: flex;
   flex-direction: column;
+  background-color: #ffffff;
+  /* Loại bỏ shadow ở đây, tập trung vào menubar */
 }
 
-.banner1 {
-  height: 104px;
+#topleft {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-.ul1 {
-  display: flex;
-  flex-direction: row;
-}
-
-.container {
-  min-height: 500px;
+  justify-content: flex-end; /* Đẩy nội dung sang phải */
   width: 100%;
-  min-width: 1100px;
-  justify-content: center;
-  display: flex;
-}
-.menu {
-  height: 56px;
-  background-color: #b22d30;
-}
-.logo1 {
-  width: 560px;
-}
-
-/**********************/
-.menubar {
-  background-color: #b22d30;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 30px;
+  padding: 10px 40px 0 40px; /* Đồng bộ padding ngang với menubar */
   box-sizing: border-box;
 }
 
-/* --- Menu bên trái --- */
+#topleft ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 25px;
+}
+.top-link {
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #5d3587; /* Xanh tím than */
+  transition: color 0.3s ease;
+}
+.top-link:hover {
+  color: #b22d30;
+  text-decoration: underline;
+}
+
+/* --- 3. KHU VỰC LOGO & TÌM KIẾM (.banner1) --- */
+/* --- Cập nhật CSS trong main.css --- */
+
+/* 1. Đảm bảo logo (thẻ <img>) không vượt quá kích thước hợp lý */
+.logo1 img {
+  /* Thiết lập chiều cao tối đa cho hình ảnh logo */
+  max-height: 80px;
+  /* Đảm bảo hình ảnh được co dãn theo tỉ lệ */
+  width: auto;
+  display: block;
+}
+
+/* 2. Điều chỉnh kích thước của khu vực chứa Logo (logo1) */
+.logo1 {
+  /* Giảm tỷ lệ chiếm dụng không gian của khu vực logo trong banner */
+  width: 45%;
+  max-width: 500px;
+  /* Đảm bảo căn chỉnh nội dung logo nếu cần */
+  display: flex;
+  align-items: center;
+}
+
+/* 3. Đảm bảo khu vực banner vẫn cân đối */
+.banner1 {
+  height: 100px; /* Tăng nhẹ chiều cao để thoáng hơn */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+}
+
+/* 4. Điều chỉnh khu vực tìm kiếm cho gọn hơn */
+#divtimkiem {
+  /* Tăng không gian cho tìm kiếm để đẩy logo sang trái hơn */
+  width: 35%;
+  min-width: 350px; /* Tăng min-width nếu cần */
+}
+
+.search-input {
+  padding: 8px 15px;
+  border-radius: 25px; /* Bo góc nhiều hơn */
+  border: 1px solid #ddd;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Shadow nhẹ */
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  border-color: #b22d30; /* Đổi màu viền khi focus */
+  outline: none;
+}
+
+/* --- 4. THANH ĐIỀU HƯỚNG CHÍNH (MENUBAR) --- */
+.menubar {
+  background-color: #1a4384;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
 .menubar-left {
   display: flex;
-  gap: 20px;
+  gap: 30px;
 }
 
 .menu-item {
   color: #fff;
   text-decoration: none;
-  font-family: "Segoe UI", sans-serif;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
+  padding: 10px 0;
+  position: relative;
   transition: 0.2s;
 }
 
-.menu-item:hover {
-  text-decoration: underline;
-  opacity: 0.9;
+/* Hiệu ứng gạch chân hiện đại */
+.menu-item::after {
+  content: "";
+  position: absolute;
+  bottom: -5px; /* Đẩy xuống dưới một chút */
+  left: 0;
+  width: 0;
+  height: 3px;
+  background-color: #fff;
+  transition: width 0.3s ease-out;
 }
 
-/* --- Phần bên phải (tên người dùng + đăng xuất) --- */
+.menu-item:hover::after {
+  width: 100%;
+}
+
+/* --- 5. TÀI KHOẢN & GIỎ HÀNG --- */
 .menubar-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
+}
+
+.cart-link {
+  color: #ffd700 !important; /* Vàng kim cương cho Giỏ hàng */
+  font-weight: 700 !important;
+}
+
+.cart-badge {
+  background-color: #ff4d4f;
+  color: white;
+  border-radius: 50%;
+  padding: 3px 8px; /* Tăng padding */
+  font-size: 13px;
+  margin-left: 8px;
+  box-shadow: 0 0 5px rgba(255, 77, 79, 0.5); /* Shadow cho badge */
 }
 
 .username {
@@ -99,24 +172,43 @@ body {
   background-color: #fff;
   color: #b22d30;
   border: none;
-  border-radius: 6px;
-  padding: 5px 12px;
+  border-radius: 20px;
+  padding: 7px 15px;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
-  transition: 0.25s;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .logout-btn:hover {
-  background-color: #f5f5f5;
+  background-color: #f0f0f0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .login-link {
   color: #fff;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  transition: color 0.3s;
 }
 
-.login-link:hover {
-  text-decoration: underline;
+/* --- 6. CONTAINER VÀ FOOTER --- */
+.container {
+  min-height: 500px;
+  width: 100%;
+  min-width: 1100px;
+  justify-content: center;
+  display: flex;
+  padding: 30px 0;
+}
+
+.main-footer {
+  background-color: #333;
+  color: #ddd;
+  padding: 25px;
+  text-align: center;
+  font-size: 14px;
+  min-width: 1100px;
 }
