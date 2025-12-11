@@ -1,12 +1,13 @@
 import "./assets/css/main.css";
 import anhlogo from "./assets/images//tennis1.jpg";
-import { Outlet, useNavigate, Link } from "react-router-dom";
+import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCart } from "./CartContext";
 
 const Layout = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { cartItems } = useCart();
 
@@ -15,113 +16,170 @@ const Layout = () => {
     0
   );
 
+  // LOGIC CẬP NHẬT TRẠNG THÁI USER (Đã sửa lỗi)
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        localStorage.removeItem("user");
+        setUser(null);
+      }
+    } else {
+      setUser(null);
     }
-  }, []);
+  }, [location.pathname]); // ✅ Đảm bảo chạy lại khi điều hướng
 
   const handleLogout = () => {
     localStorage.removeItem("user");
     setUser(null);
-    navigate("/login");
+    navigate("/"); // Chuyển về trang chủ sau khi đăng xuất
   };
 
   return (
     <div id="app-wrapper">
-      <header className="header1">
-        {/* 1. THANH MENU PHỤ TRÊN CÙNG (CÂN ĐỐI) */}
-        <div id="topleft">
-          <ul className="ul1">
-            <li>
-              <Link to="/" className="top-link">
-                TRANG CHỦ
+      <header className="main-header">
+        {/* 1. THANH TOP BAR */}
+        <div className="header-topbar">
+          <div className="container-1200 topbar-content">
+            <div className="topbar-contact">
+              <span className="hotline">
+                📞 HOTLINE: **09775.08430** | **0338000308**
+              </span>
+            </div>
+            <div className="topbar-links">
+              <Link to="/stores" className="topbar-link">
+                <i className="fa-solid fa-store"></i> HỆ THỐNG CỬA HÀNG
               </Link>
-            </li>
-            <li>
-              <Link to="/egov" className="top-link">
-                EGOV
-              </Link>
-            </li>
-
-            {/* ✅ ĐÃ SỬA: BỎ ĐIỀU KIỆN - LINK QUẢN TRỊ LUÔN HIỂN THỊ */}
-            <li>
-              <Link to="/admin/products" className="top-link">
-                QUẢN TRỊ
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* 2. KHU VỰC LOGO & TÌM KIẾM (CÂN ĐỐI) */}
-        <div id="banner" className="banner1">
-          <Link to="/" id="logo" className="logo1">
-            {/* ✅ ĐÃ SỬA: BỎ thuộc tính width="548" để CSS điều khiển */}
-            <img src={anhlogo} alt="logo" style={{ display: "block" }} />
-          </Link>
-
-          <div id="divtimkiem">
-            {/* ... (Phần tìm kiếm giữ nguyên) */}
-            <input
-              type="text"
-              placeholder="🔍 Tìm kiếm..."
-              className="search-input"
-            />
+            </div>
           </div>
         </div>
 
-        {/* 3. THANH MENU CHÍNH */}
-        <nav id="menubar" className="menubar">
-          <div className="menubar-left">
-            {/* Dùng Link thay cho <a> */}
-            <Link to="/chat" className="menu-item">
-              Chat với AI
+        {/* 2. THANH MAIN BAR */}
+        <div className="header-mainbar">
+          <div className="container-1200 mainbar-content">
+            <Link to="/" id="logo" className="logo">
+              <img src={anhlogo} alt="VNB Logo" style={{ height: "55px" }} />
             </Link>
-            <Link to="/menu2" className="menu-item">
-              Menu 2
-            </Link>
-            <Link to="/menu3" className="menu-item">
-              Menu 3
-            </Link>
-          </div>
 
-          <div className="menubar-right">
-            {/* Giỏ hàng nổi bật */}
-            <Link to="/cart" className="menu-item cart-link">
-              🛒 Giỏ hàng
-              {totalQuantity > 0 && (
-                <span className="cart-badge">{totalQuantity}</span>
+            {/* KHU VỰC TÌM KIẾM */}
+            <div className="search-box">
+              <input
+                type="text"
+                placeholder="Tìm kiếm sản phẩm, thương hiệu..."
+                className="search-input"
+              />
+              <button className="search-btn">🔍</button>
+            </div>
+
+            {/* KHU VỰC TÀI KHOẢN & GIỎ HÀNG (ĐÃ SỬA VÀ TÍCH HỢP LOGIC USER) */}
+            <div className="user-area">
+              {/* LOGIC HIỂN THỊ TÊN TÀI KHOẢN HOẶC LINK ĐĂNG NHẬP */}
+              {user ? (
+                <div className="user-authenticated-section">
+                  <span className="user-icon user-text">
+                    <i className="fa-regular fa-circle-user"></i>
+                    Chào, **{user.username}**
+                  </span>
+                  <button
+                    className="logout-btn"
+                    onClick={handleLogout}
+                    style={{
+                      backgroundColor: "transparent",
+                      color: "#fe4a00",
+                      border: "none",
+                      padding: "5px 10px",
+                      cursor: "pointer",
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    (Đăng xuất)
+                  </button>
+                </div>
+              ) : (
+                // CHƯA ĐĂNG NHẬP: Hiển thị Link Tài khoản
+                <Link to="/login" className="user-icon">
+                  <i className="fa-regular fa-circle-user"></i>
+                  <span className="user-text">Tài khoản</span>
+                </Link>
               )}
-            </Link>
 
-            {/* Thông tin đăng nhập/đăng xuất */}
-            {user ? (
-              <>
-                <span className="username">👤 {user.username}</span>
-                <button className="logout-btn" onClick={handleLogout}>
-                  Đăng xuất
-                </button>
-              </>
-            ) : (
-              // Dùng Link thay cho <a>
-              <Link to="/login" className="login-link">
-                Đăng nhập
+              {/* GIỎ HÀNG */}
+              <Link to="/cart" className="cart-link">
+                <i className="fa-solid fa-bag-shopping"></i>
+                <span className="cart-badge">{totalQuantity}</span>
+                <span className="user-text">Giỏ hàng</span>
               </Link>
-            )}
+            </div>
+          </div>
+        </div>
+
+        {/* 3. THANH NAVIGATION BAR */}
+        <nav className="header-navbar">
+          <div className="container-1200 navbar-content">
+            <Link to="/" className="nav-item">
+              TRANG CHỦ
+            </Link>
+            <Link to="/egov" className="nav-item">
+              SẢN PHẨM
+            </Link>
+            <Link to="/sale-off" className="nav-item">
+              SALE OFF
+            </Link>
+            <Link to="/news" className="nav-item">
+              TIN TỨC
+            </Link>
+            <Link to="/policy" className="nav-item">
+              CHÍNH SÁCH NHƯỢNG QUYỀN
+            </Link>
+            <Link to="/guide" className="nav-item">
+              HƯỚNG DẪN
+            </Link>
+            <Link to="/about" className="nav-item">
+              GIỚI THIỆU
+            </Link>
+            <Link to="/contact" className="nav-item">
+              LIÊN HỆ
+            </Link>
+            <Link to="/admin/products" className="nav-item admin-link">
+              QUẢN TRỊ
+            </Link>
           </div>
         </nav>
       </header>
 
-      {/* Thay thế <body> bằng <main> */}
-      <main id="container" className="container">
+      {/* NỘI DUNG CHÍNH */}
+      <main id="container" className="container-1200">
         <Outlet />
       </main>
 
-      {/* Thêm Footer chuẩn */}
+      {/* FOOTER CHUẨN */}
       <footer className="main-footer">
-        &copy; 2025 Bản quyền thuộc về Tên Công ty
+        <div className="container-1200 footer-content">
+          <p>&copy; 2025 Bản quyền thuộc về Tên Công ty. Thiết kế theo VNB.</p>
+          <div className="footer-links">
+            <Link to="/privacy">Chính sách bảo mật</Link>
+            <Link to="/terms">Điều khoản sử dụng</Link>
+          </div>
+        </div>
       </footer>
+
+      {/* 🛑 TÍNH NĂNG CHAT/HỖ TRỢ NỔI (ĐÃ THÊM) */}
+      <div className="fixed-support-buttons">
+        <Link to="/chat" className="chat-ai-button">
+          <i className="fa-solid fa-robot"></i>
+          <span>Chat AI</span>
+        </Link>
+
+        {/* Dùng icon chat hoặc icon Zalo/WhatsApp tương ứng */}
+        <a href="#" className="zalo-button">
+          <i className="fa-brands fa-whatsapp"></i>
+          <span>Zalo</span>
+        </a>
+      </div>
+      {/* 🛑 HẾT TÍNH NĂNG CHAT */}
     </div>
   );
 };

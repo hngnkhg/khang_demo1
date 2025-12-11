@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 
 // --- CẤU HÌNH API ---
-const API_KEY = "AIzaSyDEIOTfJFro2tbg7RQCNKTZuUUQaGKzC5o"; // Key từ code Python của bạn
-const MODEL_NAME = "models/gemini-2.5-flash"; // Đã đổi sang 1.5 để ổn định (bạn có thể đổi lại 2.5)
+const API_KEY = "AIzaSyDEIOTfJFro2tbg7RQCNKTZuUUQaGKzC5o";
+const MODEL_NAME = "models/gemini-2.5-flash";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/${MODEL_NAME}:generateContent?key=${API_KEY}`;
 
 interface Message {
@@ -34,7 +34,9 @@ const ChatPage = () => {
     scrollToBottom();
   }, [messages]);
 
-  // --- LOGIC GỌI API (Tương đương class ChatService trong Python) ---
+  // --- LOGIC GỌI API ---
+  // Tương đương với logic lịch sử hội thoại trong Python SDK,
+  // nhưng ở đây ta chỉ gửi tin nhắn cuối cùng (stateless)
   const sendMessageToGemini = async (userMessage: string) => {
     try {
       const payload = {
@@ -54,12 +56,14 @@ const ChatPage = () => {
       });
 
       if (!response.ok) {
+        // Log chi tiết lỗi từ API nếu có
+        const errorData = await response.json();
+        console.error("API Error Details:", errorData);
         throw new Error(`Lỗi API: ${response.status} - ${response.statusText}`);
       }
 
       const data = await response.json();
 
-      // Parse kết quả (Tương đương: data["candidates"][0]["content"]["parts"][0]["text"])
       const botReply =
         data.candidates?.[0]?.content?.parts?.[0]?.text || "Không có phản hồi.";
       return botReply;
@@ -71,10 +75,10 @@ const ChatPage = () => {
 
   // --- XỬ LÝ KHI NGƯỜI DÙNG GỬI TIN ---
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
     const userText = input;
-    setInput(""); // Xóa ô nhập liệu
+    setInput(""); // Xóa ô nhập liệu ngay lập tức
     setIsLoading(true);
 
     // 1. Thêm tin nhắn người dùng vào list
@@ -95,79 +99,56 @@ const ChatPage = () => {
     }
   };
 
-  // --- GIAO DIỆN (UI) ---
+  // --- RENDERING JSX ---
   return (
-    <div style={styles.container}>
-      <div style={styles.chatBox}>
-        {/* Header */}
-        <div style={styles.header}>
-          <h3>🤖 Chatbot HCE AI</h3>
-        </div>
+    <div className="chat-page container-1200">
+      <div className="chat-container">
+        {/* Tiêu đề (tùy chọn) */}
+        <div className="chat-header">🤖 Trợ lý AI</div>
 
-        {/* Khu vực hiển thị tin nhắn */}
-        <div style={styles.messageList}>
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              style={{
-                ...styles.messageRow,
-                justifyContent: msg.role === "user" ? "flex-end" : "flex-start",
-              }}
-            >
-              <div
-                style={{
-                  ...styles.bubble,
-                  backgroundColor: msg.role === "user" ? "#007bff" : "#e9ecef",
-                  color: msg.role === "user" ? "#fff" : "#000",
-                }}
-              >
-                {/* Xử lý xuống dòng cho text */}
-                {msg.text.split("\n").map((line, i) => (
-                  <p key={i} style={{ margin: 0, minHeight: "1em" }}>
-                    {line}
-                  </p>
-                ))}
-              </div>
+        {/* 🛑 KHU VỰC HIỂN THỊ TIN NHẮN (ĐÃ THAY BẰNG LẶP STATE) */}
+        <div className="chat-messages">
+          {messages.map((message, index) => (
+            <div key={index} className={`message ${message.role}-message`}>
+              <div className="message-bubble">{message.text}</div>
             </div>
           ))}
-          {/* Hiển thị loading khi đang chờ */}
+          {/* Hiển thị hiệu ứng loading khi chờ phản hồi */}
           {isLoading && (
-            <div style={styles.messageRow}>
-              <div
-                style={{
-                  ...styles.bubble,
-                  backgroundColor: "#e9ecef",
-                  fontStyle: "italic",
-                  color: "#666",
-                }}
-              >
-                Đang suy nghĩ...
+            <div className="message ai-message">
+              <div className="message-bubble loading-bubble">
+                ...Đang xử lý...
               </div>
             </div>
           )}
+          {/* Vị trí để tự động cuộn xuống */}
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Khu vực nhập liệu */}
-        <div style={styles.inputArea}>
+        {/* 🛑 KHU VỰC NHẬP LIỆU (ĐÃ GẮN HANDLER) */}
+        <div className="chat-input-area">
           <input
-            style={styles.input}
+            type="text"
+            placeholder={
+              isLoading ? "Vui lòng chờ phản hồi..." : "Nhập tin nhắn..."
+            }
+            // ✅ Đã sửa: dùng state 'input'
             value={input}
+            // ✅ Đã sửa: gắn onChange handler
             onChange={(e) => setInput(e.target.value)}
+            // ✅ Gắn handler cho phím Enter
             onKeyDown={handleKeyDown}
-            placeholder="Nhập tin nhắn..."
             disabled={isLoading}
           />
           <button
-            style={{
-              ...styles.sendButton,
-              backgroundColor: isLoading ? "#ccc" : "#007bff",
-              cursor: isLoading ? "not-allowed" : "pointer",
-            }}
             onClick={handleSend}
             disabled={isLoading}
+            style={{
+              backgroundColor: isLoading ? "#ccc" : "#fe4a00",
+              cursor: isLoading ? "not-allowed" : "pointer",
+            }}
           >
-            Gửi
+            {isLoading ? "Đang gửi..." : "Gửi"}
           </button>
         </div>
       </div>
@@ -175,78 +156,7 @@ const ChatPage = () => {
   );
 };
 
-// --- STYLES (CSS-in-JS) ---
-const styles = {
-  container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "calc(100vh - 100px)", // Trừ đi header của Layout
-    backgroundColor: "#f0f2f5",
-    padding: "20px",
-  },
-  chatBox: {
-    width: "100%",
-    maxWidth: "600px",
-    height: "100%",
-    backgroundColor: "#fff",
-    borderRadius: "12px",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-    display: "flex",
-    flexDirection: "column" as "column",
-    overflow: "hidden",
-  },
-  header: {
-    padding: "16px",
-    backgroundColor: "#2196F3",
-    color: "white",
-    textAlign: "center" as "center",
-    borderBottom: "1px solid #ddd",
-  },
-  messageList: {
-    flex: 1,
-    padding: "20px",
-    overflowY: "auto" as "auto",
-    display: "flex",
-    flexDirection: "column" as "column",
-    gap: "10px",
-  },
-  messageRow: {
-    display: "flex",
-    width: "100%",
-  },
-  bubble: {
-    maxWidth: "75%",
-    padding: "10px 15px",
-    borderRadius: "15px",
-    fontSize: "15px",
-    lineHeight: "1.4",
-    wordWrap: "break-word" as "break-word",
-  },
-  inputArea: {
-    padding: "15px",
-    borderTop: "1px solid #eee",
-    display: "flex",
-    gap: "10px",
-    backgroundColor: "#fafafa",
-  },
-  input: {
-    flex: 1,
-    padding: "12px",
-    borderRadius: "20px",
-    border: "1px solid #ccc",
-    outline: "none",
-    fontSize: "16px",
-  },
-  sendButton: {
-    padding: "10px 20px",
-    color: "white",
-    border: "none",
-    borderRadius: "20px",
-    fontWeight: "bold",
-    fontSize: "16px",
-    transition: "background 0.2s",
-  },
-};
-
 export default ChatPage;
+
+// --- Ghi chú: Tôi đã bỏ đoạn 'styles' CSS-in-JS vì bạn đang sử dụng classNames (chat-page, chat-container...)
+// và đã có file CSS riêng (main.css) trong các bước trước.

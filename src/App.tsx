@@ -36,32 +36,23 @@ export default function App() {
     <CartProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route path="" element={<Layout />}>
             {/* 1. TRANG CHỦ (Home Page) */}
-            <Route index element={<ListProducts_SP />} />
-
+            <Route index element={<ListProducts_SP />} /> {" "}
             {/* 2. CHỨC NĂNG CƠ BẢN */}
             <Route path="cart" element={<CartPage />} />
             <Route path="chat" element={<ChatPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="logout" element={<LogoutPage />} />
-
             {/* 3. TRANG NỘI DUNG (Từ Header) */}
-
-            {/* ✅ ĐÃ THÊM: Route cho EGOV (Giả sử Trang1 là trang EGOV) */}
             <Route path="egov" element={<Trang1 />} />
-
-            {/* Route cũ (nếu link TRANG CHỦ->EGOV là /trang1) - Nên dùng EGOV ở trên */}
-            {/* <Route path="trang1" element={<Trang1 />} /> */}
-
-            {/* ✅ ĐÃ THÊM: Route cho Menu 2 và Menu 3 (Giả sử Trang2 dùng cho cả hai) */}
             <Route path="menu2" element={<Trang2 />} />
             <Route path="menu3" element={<Trang2 />} />
-
-            {/* 4. SẢN PHẨM & CHI TIẾT */}
+            {/* 4. SẢN PHẨM & CHI TIẾT (Đã sửa) */}
             <Route path="sanpham/:id" element={<Chitietsanpham />} />
-
-            {/* 5. ADMIN (Protected Routes) */}
+            {/* Hỗ trợ URL mới */}
+            <Route path="detail/:id" element={<Chitietsanpham />} />
+            {/* 5. ADMIN (Protected Routes - Đã sửa lỗi đường dẫn tuyệt đối) */}
             <Route
               path="admin/products"
               element={
@@ -70,7 +61,8 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/admin/edit/:id" element={<EditProduct />} />
+            {/* SỬA: Bỏ dấu '/' ở đầu để nó là tuyến đường con của Layout */}
+            <Route path="admin/edit/:id" element={<EditProduct />} />
           </Route>
         </Routes>
       </BrowserRouter>
