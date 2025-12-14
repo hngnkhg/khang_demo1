@@ -30,11 +30,17 @@ import ChatPage from "./ChatPage";
 // --- IMPORT MỚI CHO GIỎ HÀNG ---
 import { CartProvider } from "./CartContext";
 import CartPage from "./CartPage";
+import TennisLandingPage from "./TennisShopLandingPage";;
+
+
 
 export default function App() {
   return (
     <CartProvider>
       <BrowserRouter>
+     
+     
+     
         <Routes>
           <Route path="" element={<Layout />}>
             {/* 1. TRANG CHỦ (Home Page) */}
@@ -52,6 +58,7 @@ export default function App() {
             <Route path="sanpham/:id" element={<Chitietsanpham />} />
             {/* Hỗ trợ URL mới */}
             <Route path="detail/:id" element={<Chitietsanpham />} />
+            <Route path="tennishome" element={<TennisLandingPage />} />
             {/* 5. ADMIN (Protected Routes - Đã sửa lỗi đường dẫn tuyệt đối) */}
             <Route
               path="admin/products"
@@ -67,5 +74,10 @@ export default function App() {
         </Routes>
       </BrowserRouter>
     </CartProvider>
+   
+    
+    
   );
+
+ 
 }

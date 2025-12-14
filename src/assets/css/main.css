@@ -579,3 +579,50 @@ ul {
 .chat-input-area button:hover {
   background-color: #d83d00;
 }
+
+/* ====================================
+   BASIC IMAGE SLIDER / CAROUSEL CSS
+   (Đã điều chỉnh chiều cao ảnh)
+   ==================================== */
+
+/* 1. Thiết lập vùng chứa ngoài (Wrapper) */
+.slider-wrapper {
+  /* Đây là div bao quanh <ImageSlider /> trong Layout.jsx */
+  margin-bottom: 20px; 
+  overflow: hidden; /* Quan trọng: Ẩn các slide ngoài viewport */
+  border-radius: 8px; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  /* Để thu nhỏ ảnh, chúng ta thiết lập chiều cao cố định cho wrapper 
+  và dùng object-fit để ảnh cover được hết khu vực đó.
+  Chiều cao mẫu: 300px.
+  */
+  height: 300px; /* <--- ĐIỀU CHỈNH CHIỀU CAO TẠI ĐÂY */
+}
+
+/* 2. Thiết lập thanh chứa các slide (Slide Track) */
+.slider-container {
+  display: flex; 
+  width: 300%; /* (3 slides * 100%) */
+  height: 100%; /* Kế thừa chiều cao từ slider-wrapper */
+  transform: translateX(0); 
+  transition: transform 0.5s ease-in-out; /* Tạo hiệu ứng chuyển động */
+}
+
+/* 3. Thiết lập từng Slide */
+.slider-slide {
+  flex-shrink: 0; 
+  width: calc(100% / 3); /* 33.333% cho 3 slides */
+  height: 100%; /* Kế thừa chiều cao */
+  display: block;
+}
+
+/* 4. Điều chỉnh kích thước ảnh bên trong Slide */
+.slider-slide img {
+  width: 100%;
+  height: 100%; /* <--- Ảnh chiếm 100% chiều cao của slide */
+  display: block;
+  
+  /* Quan trọng: Căn chỉnh ảnh để nó cover hết khu vực, cắt bỏ phần thừa */
+  object-fit: cover; /* <--- Đảm bảo ảnh lấp đầy vùng 300px, không bị méo */
+}

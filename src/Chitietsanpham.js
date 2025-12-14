@@ -1,6 +1,10 @@
 // src/Chitietsanpham.js
+
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+// 1. IMPORT SUPABASE CLIENT
+// Hãy chắc chắn rằng bạn có file này đã được cấu hình với khóa API của Supabase
+import { supabase } from "./supbaseClient"; 
 
 export default function Chitietsanpham() {
   const { id } = useParams();
@@ -11,26 +15,41 @@ export default function Chitietsanpham() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Gọi API để lấy thông tin sản phẩm theo id
+    // 2. THAY THẾ LOGIC FETCH API
     const fetchProduct = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await fetch(
-          `https://68f97a99ef8b2e621e7c302b.mockapi.io/products/${id}`
-        );
-        if (!response.ok) {
-          throw new Error("Không thể tải sản phẩm!");
+        // Tên bảng trong Supabase của bạn là 'product1' (như trong hình ảnh)
+        const { data, error: supabaseError } = await supabase
+          .from("product1") 
+          .select("*") // Lấy tất cả các cột
+          .eq("id", id) // Lọc theo cột 'id' bằng giá trị từ URL
+          .single(); // Lấy một hàng duy nhất
+
+        if (supabaseError) {
+          throw new Error(supabaseError.message || "Lỗi khi tải sản phẩm từ Supabase.");
         }
-        const data = await response.json();
-        setProduct(data);
+        
+        if (data) {
+          setProduct(data);
+        } else {
+          throw new Error("Không tìm thấy sản phẩm với ID này.");
+        }
+
       } catch (err) {
+        console.error("Lỗi Supabase:", err.message);
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProduct();
-  }, [id]);
+    if (id) {
+        fetchProduct();
+    }
+    
+  }, [id]); // Dependency array: chạy lại khi id thay đổi
 
   if (loading) {
     return <p style={{ padding: 20 }}>Đang tải dữ liệu...</p>;
@@ -41,10 +60,13 @@ export default function Chitietsanpham() {
       <div style={{ padding: 20 }}>
         <h3>Không tìm thấy sản phẩm!</h3>
         <p>{error}</p>
-        <button onClick={() => navigate("/trang1")}>Quay lại Trang 1</button>
+        <button onClick={() => navigate(-1)}>Quay lại</button>
       </div>
     );
   }
+
+  // Chú ý: Các trường dữ liệu (image, title, price, description, category) 
+  // phải khớp với tên cột trong bảng 'product1' của Supabase bạn.
 
   return (
     <div style={{ padding: "20px" }}>

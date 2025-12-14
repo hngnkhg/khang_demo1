@@ -3,6 +3,7 @@ import anhlogo from "./assets/images//tennis1.jpg";
 import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCart } from "./CartContext";
+const ImageSlider = require('./ImageSlider').default;
 
 const Layout = () => {
   const [user, setUser] = useState(null);
@@ -123,7 +124,7 @@ const Layout = () => {
               TRANG CHỦ
             </Link>
             <Link to="/egov" className="nav-item">
-              SẢN PHẨM
+              DANH SÁCH SẢN PHẨM
             </Link>
             <Link to="/sale-off" className="nav-item">
               SALE OFF
@@ -137,7 +138,7 @@ const Layout = () => {
             <Link to="/guide" className="nav-item">
               HƯỚNG DẪN
             </Link>
-            <Link to="/about" className="nav-item">
+            <Link to="/tennishome" className="nav-item">
               GIỚI THIỆU
             </Link>
             <Link to="/contact" className="nav-item">
@@ -149,6 +150,10 @@ const Layout = () => {
           </div>
         </nav>
       </header>
+
+      <div className="slider-wrapper container-1200">
+        <ImageSlider /> {/* 👈 THÊM SLIDER VÀO ĐÂY */}
+      </div>
 
       {/* NỘI DUNG CHÍNH */}
       <main id="container" className="container-1200">
